@@ -52,7 +52,7 @@ class Preston:
     VAR_REPLACE_REGEX = r"{(\w+)}"
 
     def __init__(self, **kwargs: Any) -> None:
-        self.cache = Cache()
+        self.cache = kwargs.get("cache", Cache())
         self.spec = None
         self.version = kwargs.get("version", "latest")
         self.session = requests.Session()

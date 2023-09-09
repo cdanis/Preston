@@ -231,10 +231,13 @@ class Preston:
         Returns:
             OpenAPI spec data
         """
-        if self.spec:
-            return self.spec
-        self.spec = requests.get(self.SPEC_URL.format(self.version)).json()
-        return self.spec
+        url = self.SPEC_URL.format(self.version)
+        spec = self.cache.check(url)
+        if spec:
+            return spec
+        spec = requests.get(url)
+        self.cache.set(spec)
+        return spec.json()
 
     def _get_path_for_op_id(self, id: str) -> Optional[str]:
         """Searches the spec for a path matching the operation id.
